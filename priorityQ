@@ -1,0 +1,69 @@
+#priorityq.py
+#
+#Created by: Wyat Meldman-Floch
+#Data Structures: Section 2
+#
+#
+
+
+from llistqueue import Queue
+
+class PriorityQueue:
+    def __init__ (self):#Initializes variables
+        self._qhead = None
+        self._qtail = None
+        self._count = 0
+        
+    def isEmpty(self):#Checks if list is empty, returns boolean
+        return self._qhead is None
+    
+    def length( self ):#returns length of list
+        return self._count
+    
+    def enqueue (self, item, priority):#enqueues node to priority queue
+        entry = _PriorityQueNode( priority )
+        prevNode = self._qhead
+        curNode = self._qhead
+        while curNode is not None and curNode.priority < entry.priority:
+            prevNode = curNode
+            curNode = curNode._next
+        if curNode is None:
+            if prevNode is None:
+                self._qhead = entry
+                self._qhead._next = None
+                self._qhead.item.enqueue(item)
+            elif prevNode.priority == priority:
+                prevNode.item.enqueue(item)
+            else:
+                entry._next = curNode
+                prevNode._next = entry
+                entry.item.enqueue(item)
+        elif entry.priority == curNode.priority:
+            curNode.item.enqueue(item)
+        else:
+            if curNode.priority == prevNode.priority:
+                entry._next = curNode
+                self._qhead = entry
+                entry.item.enqueue(item)
+            else:
+                entry._next = curNode
+                prevNode._next = entry
+                entry.item.enqueue(item)
+        self._count += 1
+        
+    def dequeue(self):#dequeues node
+        assert not self.isEmpty(), "cannot dequeue because queue is empty"
+        prevNode = self._qhead
+        curNode = self._qhead
+        while curNode.item.isEmpty():
+            prevNode = curNode
+            curNode = curNode._next
+        element = curNode.item.dequeue()
+        self._count -= 1
+        return element
+
+class _PriorityQueNode:#storage class
+    def __init__( self, priority ):
+        self.item = Queue()
+        self.priority = priority
+        self._next = None 
