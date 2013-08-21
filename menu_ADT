@@ -1,0 +1,68 @@
+#Menu.py
+#by Wyatt Meldman-Floch. Contact: wlmeldmanfloch@me.com
+#
+#Implements the Text Menu ADT with a python class. The purpose of the Text Menu
+#ADT is to create a dynamic text menu that can be modified.
+class TextMenu :
+    def __init__ (self, title):
+        
+        self.title = title
+        self._displayMenu = list()
+        
+    def __len__(self):
+        return len(self._displayMenu)
+    
+    def setTitle(self, newtitle):#changes title of Menu
+        self.title = newtitle
+        return self.title
+    
+    def getTitle(self):#returns the current Menu title
+        return self.title.upper()
+    
+    def addOption(self, option): #adds an option to the Menu
+        self._displayMenu.append(option)
+        return self._displayMenu
+    
+    def insertOption(self, pos, option):#inserts an option between options
+        if pos <= len(self._displayMenu):
+            self._displayMenu.insert(pos,option)
+            return self._displayMenu
+        else:
+            return "Error, input number in range "
+        
+    def removeOption(self, pos):#removes option associated with given number
+        if pos <= len(self._displayMenu):
+            element = self._displayMenu[pos]
+            self._displayMenu.remove(element)
+            return self._displayMenu
+        else:
+            return "Error, input number of in range "
+        
+    #displays options and takes user input. repeats for invalid input
+    def getChoice(self):
+        print(self.title.upper())
+        bar = 45*'-'
+        print(bar)
+        t = 0
+        
+        for i in range(len(self._displayMenu)):
+            t+=1
+            print( t,' - ', self._displayMenu[i])
+            
+        print(bar)      
+        userinput = int(input("Select option number:"))
+        
+        while userinput >= len(self._displayMenu):
+            print( "\n Error, input number of desired option \n")
+            t = 0
+            print(self.title)
+            print(bar)
+            for i in range(len(self._displayMenu)):
+                t+=1  
+                print( t,' - ', self._displayMenu[i])        
+            print(bar)                     
+            userinput = int(input("Select option number:"))
+                    
+            if userinput <= len(self._displayMenu):
+                break
+        return userinput
