@@ -1,0 +1,112 @@
+#Lifegrid.py by Wyatt Meldman-FLoch
+#This class is used to creat a sparse life grid for the game of life.
+import math
+
+ 
+class SparseLifeGrid:
+      def __init__(self):
+            self.myGrid = []
+      
+      def minRange(self):#Finds minimum range for grid
+            if len(self.myGrid) == 0:
+                  return (0,0)
+            else:
+                  minPoint = self.myGrid[0]
+                  minRow = minPoint.row
+                  minimum = self.myGrid[0]
+                  for element in self.myGrid:
+                        if element.col < minimum.col:
+                              minimum = element
+                        
+                        
+                  minCol = minimum.col
+                  minPoint_2 = (minRow, minCol)
+                  return minPoint_2
+            
+      def maxRange(self):#Finds maximum range for grid
+            if len(self.myGrid) == 0:
+                              return (0,0)            
+
+            maxPoint = self.myGrid[len(self.myGrid)-1]
+            for element in self.myGrid:
+                  if element.col > maxPoint.col:
+                        maxCol = element.col
+            maxCol = maxPoint.col
+            maxRow = maxPoint.row
+            maxPoint_2 = (maxRow, maxCol)
+            return maxPoint_2
+            
+      def isLiveCell(self,row,col):#Determines if cell is alive
+            if Point(row,col) in self.myGrid:
+                  return True
+      def clearCell(self,row,col):#Clears cell value
+            element = Point(row,col)
+            gridPoint = self.findPos(self.myGrid, element)
+            if gridPoint[0]:
+                  self.myGrid.remove(gridPoint[1], element)
+            else: 
+                  return
+      def numLiveNeighbors(self,row,col):#Determined number of neighbors each\
+            element = Point(row,col)#cell has
+            numNeighbors = 0
+            dummyVar = 0
+            gridPoint = self.findPos(self.myGrid, element)
+            for i in range(-1,2):
+                  #i = 2*i -1
+                  for j in range (-1,2):
+                        #j = 2*i -1
+                        if i == 0 and j == 0:
+                              continue
+                        if Point(row+i,col+j) in self.myGrid:
+                              numNeighbors +=1
+                              
+            print(numNeighbors)
+            return numNeighbors
+                  
+            
+            
+      def setCell(self, row, col):#Sets value to cell
+            element = Point(row,col)
+            gridPoint = self.findPos(self.myGrid, element)
+            if gridPoint[0]:
+                  return
+            else:
+                  self.myGrid.insert(gridPoint[1], element)
+            
+      def findPos(self,varList,value):
+            
+            low = 0
+            high = len(varList) - 1
+                
+            while low <= high:
+                  mid = (high + low)//2
+                  if varList[mid] == value:
+                        return (True, mid)
+                  elif value < varList[mid]:
+                        high = mid - 1
+                  else: 
+                        low = mid+1
+            return (False, low)
+  
+  
+class Point:#Storage method
+      def __init__(self,row,col):
+            self.row = row
+            self.col = col     
+      def __lt__(self,var2):#Helper method for less than
+            if self.row < var2.row:
+                  return True
+            if self.row == var2.row:
+                  if self.col < var2.col:
+                        return True
+            return False
+      
+      def __eq__(self,var2):#HElper method for equals
+            if self.row == var2.row:       
+                  if self.col == var2.col:
+                        return True
+            return False
+                  
+            
+      
+
